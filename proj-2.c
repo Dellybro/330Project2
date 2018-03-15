@@ -17,7 +17,7 @@ void producer(){
 		
 		buffer[in] = rand();
 		
-		printf("Produced: %d\nBuffer[%d]\n", buffer[in], in);
+		printf("Produced: %i\nBuffer[%d]\n", buffer[in], in);
 		
 		sleep(1);
 		
@@ -31,7 +31,7 @@ void consumer (){
     while(1 > 0){
         P(full);
 		
-		printf("Consumed: %d\nBuffer[%d]\n", buffer[out], out);
+		printf("Consumed: %i\nBuffer[%d]\n", buffer[out], out);
 		
 		buffer[out] = -1;
 		
