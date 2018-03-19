@@ -18,10 +18,10 @@ void InitSem(Semaphore *sem, int value){
     sem->value = value;
 }
 
-void P(Semaphore *v) {
+void P(Semaphore *sem) {
 
-    if ( v->value > 0){
-        v->value--;
+    if ( sem->value > 0){
+        sem->value--;
     } else {
         
 
@@ -29,17 +29,17 @@ void P(Semaphore *v) {
 		AddQueue(RunQ, current);
 		swapcontext(&(current->context), &(RunQ->head->context));
 
-        P(v);  
+        P(sem);  
     }
 }
 
-void V(Semaphore *v){
-    v->value++;
+void V(Semaphore *sem){
+    sem->value++;
 
 
-    if (v->value <= 0) 
-	{	
+    if (sem->value <= 0) {	
 		RotateQ(RunQ);
 	}
+
 	yield();
 }

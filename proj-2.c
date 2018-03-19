@@ -1,4 +1,7 @@
+/*
+Travis Delly - 1210230252
 
+*/
 #include <unistd.h>
 #include "sem.h"
 
@@ -55,8 +58,8 @@ int main(){
 	InitSem(empty, 5);
 
     start_thread(producer,1);
-    start_thread(consumer,2);
-    start_thread(producer,3);
+    start_thread(producer,2);
+    start_thread(consumer,3);
     start_thread(consumer,4);
 
     run();
