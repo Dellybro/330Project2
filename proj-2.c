@@ -57,10 +57,10 @@ int main(){
 	InitSem(full, 0);
 	InitSem(empty, 5);
 
-    start_thread(producer,1);
-    start_thread(producer,2);
-    start_thread(consumer,3);
-    start_thread(consumer,4);
+    start_thread(consumer,1);
+    start_thread(consumer,2);
+    start_thread(producer,3);
+    start_thread(producer,4);
 
     run();
 
