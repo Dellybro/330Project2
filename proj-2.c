@@ -57,10 +57,18 @@ int main(){
 	InitSem(full, 0);
 	InitSem(empty, 5);
 
+    /* 
+        This is the proof of concept, essentially 
+        the consumer thread is put in the runQ first
+        but the first thing that will be printed is the producer
+        because the consumer can't consume anything if the 
+        producer hasn't put anything in the buffer.
+    */
     start_thread(consumer,1);
-    start_thread(consumer,2);
-    start_thread(producer,3);
-    start_thread(producer,4);
+    start_thread(producer,2);
+    start_thread(consumer,3);
+    start_thread(consumer,4);
+    start_thread(consumer,5);
 
     run();
 
