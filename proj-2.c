@@ -1,74 +1,73 @@
-/*
-Travis Delly - 1210230252
-
+/**
+ * CSE 330 Assignment 1 Threading using TCB's
+ * Travis Delly
+ * 1210230252
+ * 
 */
+
 #include <unistd.h>
 #include "sem.h"
 
-Semaphore *empty;
-Semaphore *full;
+Semaphore *s1;
+Semaphore *s2;
+Semaphore *s3;
 
+int randomNumber;
 
-int buffer[5];
-
-int in = 0;
-int out = 0;
-
-void producer(){
-    while(1 > 0){
-        P(empty);
-		
-		buffer[in] = rand();
-		
-		printf("Produced: %i\nBuffer[%d]\n", buffer[in], in);
-		
-		sleep(1);
-		
-		in = (in+1) % 5;
-		
-		V(full);
+void thread1(){
+    while( 1 > 0 ){
+        randomNumber = rand();
+        V(s2);
+        V(s3);
+        P(s1);
+        P(s2);
     }
 }
 
-void consumer (){
+void thread2(){
     while(1 > 0){
-        P(full);
-		
-		printf("Consumed: %i\nBuffer[%d]\n", buffer[out], out);
-		
-		buffer[out] = -1;
-		
-		sleep(1);
-		
-		out = (out+1) % 5;
-		
-		V(empty);
+        p(s2);
+        if(randomNumber % 2 == 0){
+            printf("Thread 2 %d\n", randomNumber);
+
+            sleep(1);
+        }
+
+        v(s1);
     }
 }
+
+void thread3(){
+    while(1 > 0){
+        p(s2);
+        if(randomNumber % 2 != 0){
+            printf("Thread 3 %d\n", randomNumber);
+
+            sleep(1);
+        }
+
+        v(s1);
+    }
+}
+
+
 
 
 int main(){
     RunQ = (struct Queue*)malloc (sizeof (struct Queue));
     RunQ->head = NULL;
 
-	full = malloc(sizeof(Semaphore));
-	empty = malloc(sizeof(Semaphore));
+	s1 = malloc(sizeof(Semaphore));
+    s2 = malloc(sizeof(Semaphore));
+    s3 = malloc(sizeof(Semaphore));
 
-	InitSem(full, 0);
-	InitSem(empty, 5);
+	InitSem(s1, 0);
+	InitSem(s2, 0);
+    InitSem(s3, 0);
 
-    /* 
-        This is the proof of concept, essentially 
-        the consumer thread is put in the runQ first
-        but the first thing that will be printed is the producer
-        because the consumer can't consume anything if the 
-        producer hasn't put anything in the buffer.
-    */
-    start_thread(consumer,1);
-    start_thread(producer,2);
-    start_thread(consumer,3);
-    start_thread(consumer,4);
-    start_thread(consumer,5);
+    start_thread(thread1,1);
+    start_thread(thread2,2);
+    start_thread(thread3,3);
 
     run();
 

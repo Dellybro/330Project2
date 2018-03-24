@@ -1,5 +1,5 @@
 /**
- * CSE 330 Assignment 1 Threading using TCB's
+ * CSE 330 Assignment 2
  * Travis Delly
  * 1210230252
  * 
