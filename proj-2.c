@@ -26,27 +26,27 @@ void thread1(){
 
 void thread2(){
     while(1 > 0){
-        p(s2);
+        P(s2);
         if(randomNumber % 2 == 0){
             printf("Thread 2 %d\n", randomNumber);
 
             sleep(1);
         }
 
-        v(s1);
+        V(s1);
     }
 }
 
 void thread3(){
     while(1 > 0){
-        p(s2);
+        P(s2);
         if(randomNumber % 2 != 0){
             printf("Thread 3 %d\n", randomNumber);
 
             sleep(1);
         }
 
-        v(s1);
+        V(s1);
     }
 }
 
