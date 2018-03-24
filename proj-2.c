@@ -7,69 +7,64 @@
 
 #include <unistd.h>
 #include "sem.h"
-#include <stdlib.h>
 
-Semaphore *s1;
-Semaphore *s2;
-Semaphore *s3;
+Semaphore *empty;
+Semaphore *full;
 
-int randomNumber;
 
-void thread1(){
-    while( 1 > 0 ){
-        randomNumber = 1;
-        V(s2);
-        V(s3);
-        P(s1);
-        P(s2);
-    }
-}
+int buffer[5];
 
-void thread2(){
+int in = 0;
+int out = 0;
+
+void producer(){
     while(1 > 0){
-        P(s2);
-        if(randomNumber % 2 == 0){
-            printf("Thread 2 %d\n", randomNumber);
-
-            sleep(1);
-        }
-
-        V(s1);
+        P(empty);
+		
+		buffer[in] = rand();
+		
+		printf("Produced: %i\nBuffer[%d]\n", buffer[in], in);
+		
+		sleep(1);
+		
+		in = (in+1) % 5;
+		
+		V(full);
     }
 }
 
-void thread3(){
+void consumer (){
     while(1 > 0){
-        P(s2);
-        if(randomNumber % 2 != 0){
-            printf("Thread 3 %d\n", randomNumber);
-
-            sleep(1);
-        }
-
-        V(s1);
+        P(full);
+		
+		printf("Consumed: %i\nBuffer[%d]\n", buffer[out], out);
+		
+		buffer[out] = -1;
+		
+		sleep(1);
+		
+		out = (out+1) % 5;
+		
+		V(empty);
     }
 }
-
-
 
 
 int main(){
     RunQ = (struct Queue*)malloc (sizeof (struct Queue));
     RunQ->head = NULL;
 
-	s1 = malloc(sizeof(Semaphore));
-    s2 = malloc(sizeof(Semaphore));
-    s3 = malloc(sizeof(Semaphore));
+	full = malloc(sizeof(Semaphore));
+	empty = malloc(sizeof(Semaphore));
 
-	InitSem(s1, 0);
-	InitSem(s2, 0);
-    InitSem(s3, 0);
+	InitSem(full, 0);
+	InitSem(empty, 5);
 
-    start_thread(thread1,1);
-    start_thread(thread2,2);
-    start_thread(thread3,3);
-
+    start_thread(consumer,1);
+    start_thread(producer,2);
+    start_thread(consumer,3);
+    start_thread(consumer,4);
+    start_thread(consumer,5);
     run();
 
     return 1;
