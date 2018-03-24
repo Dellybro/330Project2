@@ -7,10 +7,7 @@
 
 #include <unistd.h>
 #include "sem.h"
-#include <time.h>
 #include <stdlib.h>
-
-srand(time(NULL));
 
 Semaphore *s1;
 Semaphore *s2;
