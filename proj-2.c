@@ -7,6 +7,10 @@
 
 #include <unistd.h>
 #include "sem.h"
+#include <time.h>
+#include <stdlib.h>
+
+srand(time(NULL));
 
 Semaphore *s1;
 Semaphore *s2;
@@ -16,7 +20,7 @@ int randomNumber;
 
 void thread1(){
     while( 1 > 0 ){
-        randomNumber = rand();
+        randomNumber = rand() % 50;
         V(s2);
         V(s3);
         P(s1);
