@@ -17,7 +17,7 @@ int randomNumber;
 
 void thread1(){
     while( 1 > 0 ){
-        randomNumber = rand() % 50;
+        randomNumber = 1;
         V(s2);
         V(s3);
         P(s1);
